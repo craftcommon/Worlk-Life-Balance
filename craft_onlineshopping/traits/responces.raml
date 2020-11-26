@@ -1,0 +1,23 @@
+#%RAML 1.0 Trait
+responses:
+  404:
+        body:
+          application/json:
+            example:
+              {
+                message: "user not found"
+              }
+  500:
+        body:
+          application/json:
+            example:
+              {
+                message: "server failed"
+              }
+  401:
+        body:
+          application/json:
+            example:
+              {
+                message: "unautenticated person"
+              }

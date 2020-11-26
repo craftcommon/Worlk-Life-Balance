@@ -1,0 +1,11 @@
+#%RAML 1.0 ResourceType
+get:
+  description: the resource <<resourcePathName>> sever failed for responce
+  responses:
+    501:
+     body:
+      pplication/json:
+        example:
+              {
+                message: "<<resourcePath>> sever failed for responce"
+              }

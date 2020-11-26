@@ -1,0 +1,23 @@
+#%RAML 1.0 SecurityScheme
+type: Basic Authentication
+description: This API support oauth 2.0 security
+describedBy:
+  headers:
+    Authorization:
+      description: user have to send token to access any resource
+      type: string
+  queryParameters:
+    access_token:
+      description: user have send valid token with the queryParameter
+      type: string
+  responses:
+    401:
+      body:
+        application/json:
+          example:
+            {
+              message: "incorrect usename or password "
+                          }
+    403:
+      description: not allowed to access the resource
+      
