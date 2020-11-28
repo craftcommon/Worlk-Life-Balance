@@ -1,0 +1,15 @@
+#%RAML 1.0 Library
+usage: To define basic lib which are used on this rest api raml sepc
+types:
+  producttype: !include /Datatypes/product.raml
+  user: !include /Datatypes/user.raml
+traits:
+  responsemessage: !include /traits/responces.raml
+securitySchemes:
+  oath: !include /securityScheme.raml
+# documentation:
+#   - !include documentation.raml
+resourceTypes:
+  collection: !include Resources/rootresourceType.raml
+annotationTypes:
+  annotation: !include annotation.raml

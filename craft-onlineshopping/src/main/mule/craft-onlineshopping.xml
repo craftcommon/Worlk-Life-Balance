@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6c77f50c-0c31-4dee-a5cf-2ef1585c3bf1" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="GetAllProducts" doc:id="6802938a-829b-4f64-8ba3-84590c511011" >
+		<http:listener doc:name="Listener" doc:id="b846f392-e775-4dd3-9c40-16575285a4e3" config-ref="HTTP_Listener_config" path="/products"/>
+		<ee:transform doc:name="Transform Message" doc:id="10875902-1138-4153-b744-9a56f9ba2c86" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+    {
+        "productid": 1,
+        "categoryid": 15,
+        "name": "Dell PC",
+        "description": "CORE I 7",
+        "video_url": "https://www.dell.com",
+        "price": 2000
+    },
+    {
+        "productid": 2,
+        "categoryid": 16,
+        "name": "Dell PC",
+        "description": "CORE I 7",
+        "video_url": "https://www.dell.com",
+        "price": 3000
+    },
+    {
+        "productid": 2,
+        "categoryid": 17,
+        "name": "Google Home",
+        "description": "Google home lets you automate stuff. It's cool.",
+        "video_url": "https://www.youtube.com/embed/r0iLfAV0pIg",
+        "price": 6000
+    },
+    {
+        "productid": 3,
+        "categoryid": 18,
+        "name": "Google Home",
+        "description": "Google home lets you automate stuff. It's cool.",
+        "video_url": "https://www.youtube.com/embed/r0iLfAV0pIg"
+    }
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetProductByID" doc:id="fb9cf4ab-e22d-4325-bb59-96c3c3162bfd" >
+		<http:listener doc:name="Listener" doc:id="53a68a4e-b69b-49ec-8f15-df2218f5df15" config-ref="HTTP_Listener_config" path="/product/{id}"/>
+		<ee:transform doc:name="Transform Message" doc:id="e1cef5fa-d64a-407c-875b-00ee9ab56cea" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+    {
+        "productid": 1,
+        "categoryid": 15,
+        "name": "Dell PC",
+        "description": "CORE I 7",
+        "video_url": "https://www.dell.com",
+        "price": 2000
+    }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetAllUsers" doc:id="bfae668d-9510-4e45-9f6a-b8fe4f2ebfaa" >
+		<http:listener doc:name="Listener" doc:id="b4f4b91f-e5c9-485c-ae9c-0690c084d8ab" config-ref="HTTP_Listener_config" path="/users"/>
+		<ee:transform doc:name="Transform Message" doc:id="d42eba1f-3fa4-4c25-a56e-00d87afff2dc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+	{
+		"userid": 900,
+		"email": "faye@hotmail.com"
+	},
+	
+		{
+		"userid": 1000,
+		"email": "betty@gmail.com"
+	},
+	
+		{
+		"userid": 1100,
+		"email": "sara@hotmail.com"
+	}
+	
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="PostUser" doc:id="cb511017-691a-4827-8e67-9789d34febdf" >
+		<http:listener doc:name="Listener" doc:id="7f140f54-28d1-4a6f-83e1-fc219b110f82" config-ref="HTTP_Listener_config" path="/postUser"/>
+		<ee:transform doc:name="Transform Message" doc:id="22587ca9-9f2e-4930-813f-dbde8b2055a1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"usid": 123]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetUserByID" doc:id="a1a9cd0b-dd02-46ed-ae4e-8e23b7bcae91" >
+		<http:listener doc:name="Listener" doc:id="c8139d54-df02-4eb6-96a4-7969f8d84c5f" config-ref="HTTP_Listener_config" path="/user/{id}"/>
+		<ee:transform doc:name="Transform Message" doc:id="79e294a5-3008-4e97-a101-c14c53c6dfce" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+	{
+		"username": "belay",
+		"email": "bb@hotmail.com"
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetOrders" doc:id="3efe06fb-af8a-4927-9ad7-66513f789f11" >
+		<http:listener doc:name="Listener" doc:id="c1d243b1-0cf2-416e-aa11-27f7b480b996" config-ref="HTTP_Listener_config" path="/orders"/>
+		<ee:transform doc:name="Transform Message" doc:id="925af1b1-6411-4c12-a314-f05ad611698e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+ [
+    {
+      "orderid": 4323,
+      "orderdate": "01/02/2020"
+    },
+    {
+      "orderid": 9999,
+      "orderdate": "01/02/2019"
+    }
+  ]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetOrderByID" doc:id="6689a7a1-8013-44fe-baf9-5ee513550c31" >
+		<http:listener doc:name="Listener" doc:id="d52076f0-d86b-46e7-acf0-4acbe6cc6a5d" config-ref="HTTP_Listener_config" path="/order/{id}"/>
+		<ee:transform doc:name="Transform Message" doc:id="d580bbba-d269-47ef-ae6d-d8df82366a68" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+     {
+     	      "orderid": 4323,
+      "orderdate": "01/02/2020"
+     } ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="PostOrder" doc:id="d7849db8-91a0-4e8d-b3d8-3e32191790ca" >
+		<http:listener doc:name="Listener" doc:id="80fb0f1e-5a84-47c5-a10a-71478f35e027" config-ref="HTTP_Listener_config" path="/PostOrder"/>
+		<ee:transform doc:name="Transform Message" doc:id="f106ecff-7de9-4dc1-98ef-496d63067f15" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"ordID": 299]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetAllCategory" doc:id="1dafdb2b-37aa-4170-96db-f81afc927c0a" >
+		<http:listener doc:name="Listener" doc:id="58e9c99d-fda8-4863-b56c-16a25cf2da96" config-ref="HTTP_Listener_config" path="/category"/>
+		<ee:transform doc:name="Transform Message" doc:id="1f529177-3ac3-411a-8053-9e268ae1a050" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+   [
+  {
+         "categoryid": 1,
+        "categoryname": "Computer",
+        "description":"Computer category"
+    },
+    {
+         "categoryid": 2, 
+        "name":"Electronics",
+        "description":"Electronics category"
+        }
+       ]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="GetCategoryByID" doc:id="a59a6e1c-5648-4601-9e2f-2e9c8f90f60e" >
+		<http:listener doc:name="Listener" doc:id="dff1505e-9eb4-4533-acb6-dd44ee5f7db1" config-ref="HTTP_Listener_config" path="/category/{id}"/>
+		<ee:transform doc:name="Transform Message" doc:id="976e9fde-d551-4948-b4c0-ccb82a821baa" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+   
+  {
+         "categoryid": 1,
+        "categoryname": "Computer",
+        "description":"Computer category"
+    }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
