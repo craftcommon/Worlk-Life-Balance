@@ -1,0 +1,141 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/sources/vcs/projects/f35028df-761c-41c1-839a-d07bdbea3459/
+title: craft-shopping
+version: 1.0
+mediaType: 
+- application/json
+uses:
+  mylib: library.raml
+/products:
+
+  get:
+    description: get product return list of all product.
+    responses:
+      200:
+        description: all products
+        body:
+          application/json:
+            example: !include Examples/products.raml
+  type:
+    mylib.collection:
+      resourcePath: mylib.product         
+  is:
+   mylib.responsemessage            
+    
+  post:
+  /{productid}:
+    get:
+     description: return single product.
+     responses:
+      200:
+        description: get products
+        body:
+          application/json:
+            type: mylib.producttype
+            example: !include Examples/product.raml
+      
+    is:
+      mylib.responsemessage
+      
+                 
+/user:
+  description:  this is the users resource
+  get:
+    queryParameters:
+      id:
+        description: id
+        type: integer
+        required: false
+      fullname:
+        description: fname and lname
+        type: string
+        enum:
+          [john, mike]
+        required: false
+      username:
+        description: username
+        maxLength: 10
+        minLength: 2
+        required: false
+        default: john
+      address:
+        description: address
+        type: string
+        required: false 
+    description: return list of all users.
+    responses:
+      201:
+        description: get all users
+        body:
+          application/json:
+            type: mylib.user
+            example: !include /Examples/user.raml
+  type:
+    mylib.collection:
+      resourcePath: mylib.user           
+  is:
+    mylib.responsemessage
+
+  post:
+    body:
+      application/json:
+        example:
+          {
+            username: "Johnnnnn",
+            email: "john@example.com"
+          }
+    responses:
+      201:
+        description: user acc created
+        body:
+          application/json:
+            example:
+             {
+              userid: 123
+            }
+    is:
+      mylib.responsemessage
+
+  put:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                massage: "user updated"
+              }  
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                message: "user info deleted"
+              }            
+/{userid}:
+  get:
+    responses:
+      200:
+        description: get all users
+        body:
+          application/json:
+            type: mylib.user
+            example: !include /Examples/user.raml
+  type:
+    mylib.collection:
+      resourcePath: mylib.userid            
+  is:
+    mylib.responsemessage
+    
+/order:
+  get:
+  post:
+    responses:
+      201:
+        description: order created
+      
+/catagory:
+  get:
+    

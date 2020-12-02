@@ -1,0 +1,78 @@
+#%RAML 1.0
+title: craft-employees
+/employees:
+  description: "All employees"
+  get:
+    description: "Get the list of employees"
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include /Examples/employees.raml
+      400:
+        body:
+          application/json:
+            example: "not found"
+                     
+  post:
+    description: "Employee added to the list of employees"
+    body:
+      application/json:
+        example: !include /Examples/EmployeeByID.raml
+    responses:
+      200:
+        body:
+          application/json:
+           example: !include /Examples/employees.raml
+  put:
+    description: "Employee Updated"
+    body:
+      application/json:
+        example: !include /Examples/EmployeeByID.raml
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include /Examples/EmployeeByID.raml
+/{empID}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include /Examples/EmployeeByID.raml
+      400:
+        body:
+          application/json:
+            example: "empID not found"
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example: "employee deleted"
+      400:
+        body:
+          application/json:
+            example: "empID not found"    
+/address:
+  get:
+    queryParameters:
+      empID:
+      empName:
+      empAge:
+      empSalary:
+      empAddress:
+    description: return list of all employees.
+    responses:
+      201:
+        description: get all employees
+        body:
+          application/json:
+            example: !include /Examples/EmployeeByID.raml
+  post:
+    body:
+      application/json:
+        example: !include /Examples/employees.raml
+                                   
+          
