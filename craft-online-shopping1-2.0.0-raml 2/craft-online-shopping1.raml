@@ -1,0 +1,136 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/fde866bf-51b5-45c9-935e-537ca370e79b
+title: craft-online-shopping1
+version: 1.0.1
+mediaType: 
+  - application/json
+uses:
+  Mylib: library.raml   
+/users:
+  description: this is the users resource
+  get:
+    queryParameters:
+      id:
+        description: id
+        type: integer
+        required: false
+      fullname:
+        description: firstname and lastname
+        type: string
+        enum:
+          [jhon,mike]
+        required: false  
+      username:
+        description: username
+        maxLength: 10
+        minLength: 2
+        required: false
+        default: jhon     
+    description: users resource get thhp status code responses
+    responses:
+      200:
+        body:
+          application/json:
+            type: Mylib.users
+            example: !include examples/users.json
+  # type:
+  #   collection:
+  #     resourcePath: Mylib.users 
+
+  is:
+    - Mylib.responcemessage 
+ 
+  /{userid}:
+    get:
+      description: this the user resource
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/user.json
+    # type:
+    #   collection:
+    #    resourcePath: Mylib.user
+
+    is:
+      - Mylib.responcemessage
+
+  post:
+    description: list of post status codes
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              {
+              "uid":222
+              }                                                             
+/products:
+  description: list of all prosucts
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: Mylib.products
+            example: !include examples/products.json
+  # type:
+  #   collection:
+  #     resourcePath: Mylib.products          
+      
+    is:
+      - Mylib.responcemessage 
+
+  /{productid}:
+    get:
+      responses:
+        201:
+          body:
+            application/json:
+              example: !include examples/product.json
+    # type:
+    #   collection:
+    #     resourcePath: Mylib.product
+
+    is:
+      - Mylib.responcemessage
+
+/orders:
+  description: list of all products
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: Mylib.orders
+            example: !include examples/orders.json
+  # type:
+  #   collection:
+  #     resourcePath: Mylib.orders
+
+    is:
+      - Mylib.responcemessage
+
+  /{orderid}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/order.json
+    # type:
+    #   collection:
+    #     resourcePath: Mylib.order
+
+  post:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+               "orderid": 1503
+              }
+    is:
+      - Mylib.responcemessage          
+                   

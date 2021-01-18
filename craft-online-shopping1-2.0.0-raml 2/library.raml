@@ -1,0 +1,16 @@
+#%RAML 1.0 Library
+usage: to define basic libraries which are used on this rest api raml specification
+types:
+  users: !include Datatypes/usersdataType.raml
+  products: !include Datatypes/productsdataType.raml
+  orders: !include Datatypes/ordersdataType.raml
+traits:
+  responcemessage: !include Traits/responces.raml
+securitySchemes:
+  oath: !include securityScheme.raml
+# documentation:
+#    - !include documentation.raml
+resourceTypes:
+  collection: !include resources/rootresourceType.raml
+annotationTypes:
+  annotation: !include annotation.raml 

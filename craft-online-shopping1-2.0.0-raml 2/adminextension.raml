@@ -1,0 +1,75 @@
+#%RAML 1.0 Extension
+extends: craft-online-shopping1.raml
+resourceTypes:
+  collection: !include resources/AdminresourceType.raml
+/Adminusers:
+  type:
+    collection:
+      resourcePathName: user
+      resourcePath: user
+  post:
+  put:  
+  delete:
+     responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                message: "resource deleted"
+              } 
+/Adminproducts:
+  # get:
+  #   responses:
+  #     404:
+  #       body:
+  #         application/json:
+  #           example:
+  #             {
+  #               message: "product not found"
+  #             }
+  type:
+    collection:
+      resourcePathName: product
+      resourcePath: product
+  post:
+  put:
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                message: "resource deleted"
+              } 
+/Adminorders:
+  # get:
+  #   responses:
+  #     404:
+  #       body:
+  #         application/json:
+  #           example:
+  #             {
+  #               message: "order not found"
+  #             }
+  type:
+    collection:
+      resourcePathName: order
+      resourcePath: order
+  post:
+  put:
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                message: "resource deleted"
+              }
+
+ 
+          
+                        
+        
