@@ -1,0 +1,103 @@
+#%RAML 1.0
+version: v1
+title: Notes App API
+
+types:
+  notes: !include /datatype/notesDataType.raml
+
+traits:
+  client-id-required:
+      headers:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      responses:
+        401:
+          description: Unauthorized, The client_id or client_secret are not valid or the client does not have access.
+        429:
+          description: The client used all of it's request quota for the current period.
+        500:
+          description: An error ocurred, see the specific message (Only if it is a WSDL enpoint).
+        503:
+          description: Contracts Information Unreachable.
+
+          
+
+
+/notes:
+  is: [client-id-required]
+  get:
+    displayName: Get all Notes
+    description: get list all Notes from the notes_app table
+    responses:
+      200:
+        description: list of all notes
+        body:
+          application/json:
+            type: notes[]
+            examples:
+              output: !include /examples/notesExample.raml
+  post:
+    displayName: Add Note
+    description: add new Note to the notes_app table with id
+    body:
+      application/json:
+        type: notes
+        examples: 
+          input: !include /examples/noteExample.raml
+    responses:
+      201:
+        description: Success
+        body:
+          application/json:
+            example:
+              message: Accounts created 
+  /{noteId}:
+    is: [client-id-required]
+    get:
+      displayName: Get Note by id
+      description: Retrieves an notes detail based on unique Note ID from the notes_app table
+      responses:
+        201:
+          description: Success
+          body:
+            application/json:
+              type: notes
+              examples:
+                output: !include /examples/noteExample.raml
+    put:
+      displayName: Update note by ID
+      description: replace all values of the associated Notes.
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Note is replaced
+        400:
+          body:
+            application/json:
+              example: 
+                message: Error in replacing the Note. Please check your code and make sure it's valid.
+    delete:
+      displayName: Delete Note by ID
+      description: Delete the associated Note.
+      responses:
+       200:
+        body:
+          application/json:
+            example: 
+              message: Note deleted 
+       400: 
+        body:
+          application/json:
+            example: 
+              message: Error deleting Note. Please check the Note id you provided.
+  
+    
+
+      
+
+      
+    
