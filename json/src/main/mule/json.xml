@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a3755684-235d-4951-9ab6-28e3d9bd283e" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="8cb06ebc-c32c-4790-9fc4-81a436c91ee4" >
+		<file:connection workingDir="C:\Users\Saye\Desktop\craft final project\files" />
+	</file:config>
+	<flow name="jsonFlow" doc:id="8316a944-c15c-4d20-9e0f-3e8d7149bce0" >
+		<http:listener doc:name="Listener" doc:id="2287d15d-c6b5-4d29-a791-1c7db4e14c9c" config-ref="HTTP_Listener_config" path="json"/>
+		<file:read doc:name="Read" doc:id="1beab8cc-5164-48ba-9f0d-abef3e9ef937" config-ref="File_Config" path="customer_data.csv"/>
+		<ee:transform doc:name="Transform Message" doc:id="f527e78c-b98f-4667-8a4f-cd17f651b984" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="b17d234a-5796-4bde-b214-96ff10fce7d0" config-ref="File_Config" path="customer.json"/>
+	</flow>
+</mule>

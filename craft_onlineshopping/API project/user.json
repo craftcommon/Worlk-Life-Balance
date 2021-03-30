@@ -1,0 +1,9 @@
+#%RAML 1.0 NamedExample
+ {
+                username: "john",
+                fname: "Johson",
+                lname: "Motosa",
+                userid: 2323,
+                orderid: 4323,
+                email: "john@example.com"
+              }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="23604285-3dcd-4778-af88-1da95ce936d8" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="01-mulebasics-startFlow" doc:id="01ab32ad-2303-44aa-8091-04761d0373fd" initialState="started">
+		<http:listener doc:name="Listener" doc:id="9d063917-88ac-424c-a6af-1ca846712b3b" config-ref="HTTP_Listener_config" path="/hello/{city}"/>
+		<set-payload value="#['Hello ' ++ attributes.queryParams.name as String ++ ' city  '++ attributes.uriParams.city]" doc:name="Set Payload" doc:id="4acb6749-f8bf-4e06-b8d1-63d3175b1cc5" />
+		<set-variable value="#[attributes.uriParams.city]" doc:name="Set Variable" doc:id="3b1e6c0c-fa78-4fa6-afe8-b7b0681a0fff" variableName="city"/>
+		<logger level="INFO" doc:name="Logger" doc:id="1dd741c5-1a7f-4706-84fe-0a78169e880e" message="#[vars.city]"/>
+		<ee:transform doc:name="Transform Message" doc:id="a9e3f37f-bb42-4d46-adb4-fd2ec826d546" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="01-mulebasics-startFlow1" doc:id="e06c3559-3822-4cd7-a4ad-c49e1d8ce350" >
+		<http:listener doc:name="Listener" doc:id="4d39d652-7be0-42d7-ac17-5f2d45fc081f" config-ref="HTTP_Listener_config" path="/sayhello"/>
+		<java:invoke-static method="sayHello(java.lang.String,java.lang.String)" doc:name="Invoke static" doc:id="3336e518-0b23-4ebb-8893-5a85322e74a3" class="com.way2learnonline.StockQuoteService">
+			<java:args ><![CDATA[#[%dw 2.0
+output application/java
+---
+{
+	name: attributes.queryParams.name as String,
+	city: attributes.queryParams.city as String
+}]]]></java:args>
+		</java:invoke-static>
+		<logger level="INFO" doc:name="Logger" doc:id="906bd647-a49b-4b0a-9ed4-e8844cb59ec7" message="#[payload]" />
+	</flow>
+	<flow name="01-mulebasics-startFlow2" doc:id="fceca333-a17c-418d-a4af-67a3937179b8" >
+		<http:listener doc:name="Listener" doc:id="ee194cc1-87b8-4ca5-895e-c48ba17f971f" config-ref="HTTP_Listener_config" path="/getprice"/>
+		<java:new constructor="StockQuoteService()" doc:name="New" doc:id="414cf969-28fa-4a16-9f2e-68a5e0b8cec4" class="com.way2learnonline.StockQuoteService" target="sqs"/>
+		<java:invoke doc:name="Invoke" doc:id="32f342f7-5e1d-4e2d-9286-e121ec7fb005" instance="#[vars.sqs]" class="com.way2learnonline.StockQuoteService" method="getStockPrice(java.lang.String)">
+			<java:args ><![CDATA[#[%dw 2.0
+output application/java
+---
+{
+	stockSymbol: attributes.queryParams.stock as String
+}]]]></java:args>
+		</java:invoke>
+	</flow>
+</mule>

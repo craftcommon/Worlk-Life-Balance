@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="noteJson" format="json">
+      <types:shape format="weave" example="examples/Note.json"><![CDATA[%dw 2.0
+
+type noteJson = Array<{|  ID: Number {"typeId": "int"},   Title: String,   Content: String,   CreatedAt: String,   UpdatedAt: String|}> {"example": "[{\\\"ID\\\":1,\\\"Title\\\":\\\"This is my first note\\\",\\\"Content\\\":\\\"Be happy\\\",\\\"CreatedAt\\\":\\\"2021-01-05\\\",\\\"UpdatedAt\\\":\\\"2021-01-05\\\"},{\\\"ID\\\":2,\\\"Title\\\":\\\"This is my second note\\\",\\\"Content\\\":\\\"Salesforce\\\",\\\"CreatedAt\\\":\\\"2021-01-06\\\",\\\"UpdatedAt\\\":\\\"2021-01-05\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="noteCSV" format="csv">
+      <types:shape format="weave" example="examples/Notes.csv"><![CDATA[%dw 2.0
+
+type noteCSV = Array<{|  ID: Number,   Title: String,   Content: String,   CreatedAt: Date,   UpdatedAt: Date|}> {"isQuotedString": "false",
+"header": "true",
+"headerLineNumber": "0"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#2010dd5d-aedd-4746-a231-2eb9585529da">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="noteCSV"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#3b588060-5b3a-4fe7-a922-7c60d7f6ba3b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="noteCSV"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6e3d0fb3-a1d9-4c6a-b828-b9a4e5f21869"/>
+  <types:enrichment select="#2cc28861-7894-4610-ba77-ef8ccb7352b3"/>
+</types:mule>
